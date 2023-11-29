@@ -5,6 +5,9 @@ import com.omnm.pay.Entity.Contract;
 import com.omnm.pay.Entity.Pay;
 import com.omnm.pay.enumeration.contract.PaymentCycle;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.rmi.RemoteException;
@@ -14,28 +17,18 @@ import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
 
 @Service
-public class PayService extends UnicastRemoteObject implements PayServiceIF {
+public class PayService implements PayServiceIF {
     @Autowired
     PayDao payDao;
-    private ContractServiceIF contractService;
-    public PayService() throws RemoteException {
-    }
-
-
     @Override
-    public void setContractService(ContractServiceIF contractService) throws RemoteException {
-
-    }
-
-    @Override
-    public int pay(Contract contract, Pay pay) throws RemoteException{
+    public ResponseEntity<Integer> postPay(Contract contract, Pay pay) throws RemoteException{
         int cycle= PaymentCycle.getCycle(contract.getPayCycle());
         Timestamp deadline= contract.getPaymentDeadline();
         LocalDateTime newDeadline = deadline.toLocalDateTime();
         newDeadline = newDeadline.plus(cycle, ChronoUnit.MONTHS);
         boolean isSuccess = setPaymentDeadline(contract.getId(), newDeadline);
-        if(!isSuccess) return 0;
-        return this.payDao.add(pay);
+        if(!isSuccess) return new ResponseEntity<>(0,new HttpHeaders(), HttpStatus.valueOf(500));
+        return new ResponseEntity<>(this.payDao.createPay(pay),new HttpHeaders(), HttpStatus.valueOf(200));
     }
 
     private boolean setPaymentDeadline(int id, LocalDateTime newDeadline) {
