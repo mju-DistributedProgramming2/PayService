@@ -1,15 +1,19 @@
 package com.omnm.pay.Service;
 
+import com.amazonaws.services.datapipeline.model.SetStatusRequest;
 import com.omnm.pay.DAO.PayDao;
+import com.omnm.pay.DTO.PatchDeadlineInContractByIdRequest;
 import com.omnm.pay.Entity.Contract;
 import com.omnm.pay.Entity.Pay;
+import com.omnm.pay.configuration.Constants;
+import com.omnm.pay.configuration.PatchRestTemplate;
 import com.omnm.pay.enumeration.contract.PaymentCycle;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.net.URI;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.sql.Timestamp;
@@ -32,28 +36,22 @@ public class PayService implements PayServiceIF {
     }
 
     private boolean setPaymentDeadline(int id, LocalDateTime newDeadline) {
-//        PatchRestTemplate template = new PatchRestTemplate();
-//        URI uri = UriComponentsBuilder
-//                .fromUriString(Constants.BASE_URL)
-//                .path(Constants.CONTRACT_SERVICE_GET_CONTRACT_URL + "status")
-//                .encode()
-//                .build()
-//                .toUri();
-//
-//        SetStatusRequest setStatusRequest = new SetStatusRequest();
-//        setStatusRequest.setAccidentId(accidentId);
-//        setStatusRequest.setStatus(status);
-//        HttpHeaders headers = new HttpHeaders();
-//        headers.setContentType(MediaType.APPLICATION_JSON);
-//
-//        HttpEntity requestEntity = new HttpEntity(setStatusRequest, headers);
-//        System.out.println(requestEntity.getBody());
-//
-//        ResponseEntity<SetStatusResponse> result = template.exchange(uri, HttpMethod.PATCH, requestEntity, SetStatusResponse.class);
-//
-//        System.out.println("Status Code: " + result.getStatusCode());
-//        System.out.println("Response Body: " + result.getBody());
+        PatchRestTemplate template = new PatchRestTemplate();
+        URI uri = UriComponentsBuilder
+                .fromUriString(Constants.BASE_URL)
+                .path(Constants.CONTRACT_SERVICE_PATCH_CONTRACT_URL + "payment-deadline-setting")
+                .encode()
+                .build()
+                .toUri();
 
-        return true;
+        PatchDeadlineInContractByIdRequest patchDeadlineInContractByIdRequest = new PatchDeadlineInContractByIdRequest(id,Timestamp.valueOf(newDeadline));
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity requestEntity = new HttpEntity(patchDeadlineInContractByIdRequest, headers);
+        System.out.println(requestEntity.getBody());
+
+        ResponseEntity<Boolean> result = template.exchange(uri, HttpMethod.PATCH, requestEntity, Boolean.class);
+        return result.getBody();
     }
 }
