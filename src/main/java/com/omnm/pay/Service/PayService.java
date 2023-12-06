@@ -49,7 +49,6 @@ public class PayService implements PayServiceIF {
         headers.setContentType(MediaType.APPLICATION_JSON);
 
         HttpEntity requestEntity = new HttpEntity(patchDeadlineInContractByIdRequest, headers);
-        System.out.println(requestEntity.getBody());
 
         ResponseEntity<Boolean> result = template.exchange(uri, HttpMethod.PATCH, requestEntity, Boolean.class);
         return result.getBody();
