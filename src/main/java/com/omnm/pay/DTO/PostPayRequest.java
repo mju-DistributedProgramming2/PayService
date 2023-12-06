@@ -4,7 +4,7 @@ package com.omnm.pay.DTO;
 import com.omnm.pay.Entity.Contract;
 import com.omnm.pay.Entity.Pay;
 
-public class PayRequest {
+public class PostPayRequest {
 
     private Contract contract;
     private Pay pay;
