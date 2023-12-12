@@ -13,7 +13,6 @@ import java.sql.Timestamp;
 
 public class Contract implements Serializable {
     private int id;
-    private int customerInfoId;
     private String customerId;
     private int insuranceId;
     private String saleEmployeeId;
@@ -27,7 +26,6 @@ public class Contract implements Serializable {
     private ContractStatus contractStatus;
 
     public Contract(int customerInfoId, int insuranceId, String saleEmployeeId, String customerId, ContractTerm term, int paymentFee, PaymentCycle paymentCycle, int compensation, ContractStatus contractStatus) {
-        this.customerInfoId = customerInfoId;
         this.insuranceId = insuranceId;
         this.saleEmployeeId = saleEmployeeId;
         this.customerId=customerId;
@@ -38,6 +36,8 @@ public class Contract implements Serializable {
         this.contractStatus = contractStatus;
     }
 
+
+
     public int getId() {
         return id;
     }
@@ -46,13 +46,6 @@ public class Contract implements Serializable {
         this.id = id;
     }
 
-    public int getCustomerInfoId() {
-        return customerInfoId;
-    }
-
-    public void setCustomerInfoId(int customerInfoId) {
-        this.customerInfoId = customerInfoId;
-    }
 
     public int getInsuranceId() {
         return insuranceId;
