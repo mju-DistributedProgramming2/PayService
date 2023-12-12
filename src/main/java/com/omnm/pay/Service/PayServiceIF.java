@@ -8,6 +8,6 @@ import org.springframework.http.ResponseEntity;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface PayServiceIF  extends Remote {
-    ResponseEntity<Integer> postPay(Contract contract, Pay pay) throws RemoteException;
+public interface PayServiceIF{
+    ResponseEntity<Integer> postPay(Contract contract, Pay pay);
 }

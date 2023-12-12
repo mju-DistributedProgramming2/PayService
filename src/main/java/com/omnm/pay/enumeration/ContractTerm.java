@@ -1,4 +1,4 @@
-package com.omnm.pay.enumeration.contract;
+package com.omnm.pay.enumeration;
 
 public enum ContractTerm {
     OneYear(1),

@@ -1,21 +1,18 @@
 package com.omnm.pay.Service;
 
-import com.amazonaws.services.datapipeline.model.SetStatusRequest;
 import com.omnm.pay.DAO.PayDao;
 import com.omnm.pay.DTO.PatchDeadlineInContractByIdRequest;
 import com.omnm.pay.Entity.Contract;
 import com.omnm.pay.Entity.Pay;
 import com.omnm.pay.configuration.Constants;
 import com.omnm.pay.configuration.PatchRestTemplate;
-import com.omnm.pay.enumeration.contract.PaymentCycle;
+import com.omnm.pay.enumeration.PaymentCycle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.rmi.RemoteException;
-import java.rmi.server.UnicastRemoteObject;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
@@ -25,7 +22,7 @@ public class PayService implements PayServiceIF {
     @Autowired
     PayDao payDao;
     @Override
-    public ResponseEntity<Integer> postPay(Contract contract, Pay pay) throws RemoteException{
+    public ResponseEntity<Integer> postPay(Contract contract, Pay pay){
         int cycle= PaymentCycle.getCycle(contract.getPayCycle());
         Timestamp deadline= contract.getPaymentDeadline();
         LocalDateTime newDeadline = deadline.toLocalDateTime();
@@ -53,4 +50,6 @@ public class PayService implements PayServiceIF {
         ResponseEntity<Boolean> result = template.exchange(uri, HttpMethod.PATCH, requestEntity, Boolean.class);
         return result.getBody();
     }
+
+
 }

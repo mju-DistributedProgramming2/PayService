@@ -1,4 +1,4 @@
-package com.omnm.pay.enumeration.contract;
+package com.omnm.pay.enumeration;
 
 public enum ContractStatus {
     Apply("신청"),

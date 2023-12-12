@@ -4,9 +4,9 @@ package com.omnm.pay.Entity;
 
 
 
-import com.omnm.pay.enumeration.contract.ContractStatus;
-import com.omnm.pay.enumeration.contract.ContractTerm;
-import com.omnm.pay.enumeration.contract.PaymentCycle;
+import com.omnm.pay.enumeration.ContractStatus;
+import com.omnm.pay.enumeration.ContractTerm;
+import com.omnm.pay.enumeration.PaymentCycle;
 
 import java.io.Serializable;
 import java.sql.Timestamp;

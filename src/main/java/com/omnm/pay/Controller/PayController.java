@@ -15,7 +15,7 @@ public class PayController {
     @Autowired
     PayService payService;
     @PostMapping("/pay")
-    public ResponseEntity<Integer> postPay(@RequestBody PostPayRequest postPayRequest) throws RemoteException {
+    public ResponseEntity<Integer> postPay(@RequestBody PostPayRequest postPayRequest){
         return payService.postPay(postPayRequest.getContract(), postPayRequest.getPay());
     }
 }
